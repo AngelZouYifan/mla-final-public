@@ -59,20 +59,41 @@ filtered_data = filtered_data[filtered_data['category'].isin(selected_categories
 # Views
 # view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
 
-
-if view_option == "App-Centered View":
+if view_option == \"App-Centered View\":
     app_names = filtered_data['app'].unique()
     selection_mode = st.radio("Selection Mode", ["Single Select", "Multi Select"])
     
     if selection_mode == "Single Select":
         selected_app = st.selectbox("Select App", app_names)
         app_data = filtered_data[filtered_data['app'] == selected_app]
-        fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': 'Usage Time (s)'})
+        unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
+        
+        if unit_option == "Minutes":
+            app_data['usage'] = app_data['usage'] / 60
+            unit_label = 'Usage Time (minutes)'
+        elif unit_option == "Hours":
+            app_data['usage'] = app_data['usage'] / 3600
+            unit_label = 'Usage Time (hours)'
+        else:
+            unit_label = 'Usage Time (seconds)'
+        
+        fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': unit_label})
     else:
         selected_apps = st.multiselect("Select Apps", app_names, default=app_names[:1])
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
-        fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': 'Usage Time (s)'})
+        unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
+        
+        if unit_option == "Minutes":
+            grouped_data['usage'] = grouped_data['usage'] / 60
+            unit_label = 'Usage Time (minutes)'
+        elif unit_option == "Hours":
+            grouped_data['usage'] = grouped_data['usage'] / 3600
+            unit_label = 'Usage Time (hours)'
+        else:
+            unit_label = 'Usage Time (seconds)'
+        
+        fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': unit_label})
     
     st.plotly_chart(fig)
 
