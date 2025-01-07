@@ -118,9 +118,9 @@ elif view_option == "Time-Centric View":
 # Create 100% Stacked Area Chart for Overview View
 if view_option == "Overview":
     # Treemap: Category Usage Proportion
-    category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
-    total_usage = category_usage['usage'].sum()
-    category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
+    # category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+    # total_usage = category_usage['usage'].sum()
+    # category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
 
     # treemap_fig = px.treemap(
     #     filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
@@ -132,21 +132,26 @@ if view_option == "Overview":
     # )
     # st.plotly_chart(treemap_fig)
 
+    # Treemap with distinct color variation for categories and subtle variation for apps
+    category_usage = filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index()
+
+    # Normalize usage for color scaling within each category
+    category_usage['category_total'] = category_usage.groupby('category')['usage'].transform('sum')
+    category_usage['normalized_usage'] = category_usage['usage'] / category_usage['category_total']
+
     treemap_fig = px.treemap(
-        filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
+        category_usage,
         path=['category', 'app'], 
         values='usage', 
         title="App Usage by Category and App (Treemap)",
-        hover_data={'usage': ':.2f'},
-        color='usage',
+        hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
+        color='normalized_usage',
         color_continuous_scale='Blues',
-        range_color=[filtered_data['usage'].min(), filtered_data['usage'].max()],
-        color_discrete_sequence=px.colors.qualitative.Pastel
-        )
+        range_color=[0, 1]
+    )
     st.plotly_chart(treemap_fig)
 
-
-    
+        
 
     # Heatmap: Usage Over Time by Category
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
