@@ -1,0 +1,50 @@
+altair==5.5.0
+attrs==24.3.0
+blinker==1.9.0
+cachetools==5.5.0
+certifi==2024.12.14
+charset-normalizer==3.4.1
+click==8.1.8
+contourpy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_deuzpvbq4p/croot/contourpy_1700583585680/work
+cycler @ file:///home/conda/feedstock_root/build_artifacts/cycler_1733332471406/work
+fonttools @ file:///Users/runner/miniforge3/conda-bld/fonttools_1735335837357/work
+gitdb==4.0.12
+GitPython==3.1.44
+idna==3.10
+importlib_resources @ file:///home/conda/feedstock_root/build_artifacts/importlib_resources_1733231327252/work
+Jinja2==3.1.5
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+kiwisolver @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_e26jwrjf6j/croot/kiwisolver_1672387151391/work
+markdown-it-py==3.0.0
+MarkupSafe==3.0.2
+matplotlib==3.9.2
+mdurl==0.1.2
+munkres==1.1.4
+narwhals==1.21.0
+numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1671485057293/work
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1733203243479/work
+pandas==1.5.3
+pillow @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_21uno0y2_n/croot/pillow_1734430588047/work
+plotly @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_c1x0dovyom/croot/plotly_1726245570087/work
+protobuf==5.29.2
+pyarrow==18.1.0
+pydeck==0.9.1
+Pygments==2.19.1
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1735698276679/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1733215673016/work
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1733215667876/work
+referencing==0.35.1
+requests==2.32.3
+rich==13.9.4
+rpds-py==0.22.3
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1733380938961/work
+smmap==5.0.2
+streamlit==1.41.1
+tenacity @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_c71tb3i2xv/croot/tenacity_1730302538205/work
+toml==0.10.2
+tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1732615926474/work
+typing_extensions==4.12.2
+unicodedata2 @ file:///Users/runner/miniforge3/conda-bld/unicodedata2_1729704644728/work
+urllib3==2.3.0
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1732827521216/work

@@ -1,0 +1,78 @@
+{
+    "system_tools": {
+        "name": "System Tools",
+        "apps": [
+            "com.apple.finder", "com.apple.clock", "com.apple.Preferences", "com.apple.mobiletimer",
+            "com.apple.systempreferences", "com.apple.ActivityMonitor", "com.apple.AuthKitUIService",
+            "com.apple.InCallService", "com.apple.CoreAuthUI", "com.apple.ScreenshotServicesService",
+            "com.apple.VoiceMemos", "com.apple.Terminal"
+        ]
+    },
+    "communication": {
+        "name": "Communication",
+        "apps": [
+            "com.tencent.xinWeChat", "com.tencent.xin", "net.whatsapp.WhatsApp", "com.burbn.instagram",
+            "com.facebook.Facebook", "com.facebook.Messenger", "us.zoom.xos", "com.tinyspeck.slackmacgap",
+            "com.tinyspeck.chatlyio", "com.xingin.discover", "com.zhihu.ios", "com.naver.linewebtoon",
+            "com.openai.chat"
+        ]
+    },
+    "productivity": {
+        "name": "Productivity",
+        "apps": [
+            "com.microsoft.VSCode", "com.microsoft.Outlook", "com.microsoft.Excel", "com.microsoft.Office.Outlook",
+            "notion.id", "com.google.Sheets", "com.apple.Notes", "com.apple.TextEdit", "com.apple.iWork.Keynote",
+            "com.apple.mobilecal", "com.instructure.icanvas", "com.sunsama.native-app", "com.sunsama.mobile"
+        ]
+    },
+    "media_entertainment": {
+        "name": "Media & Entertainment",
+        "apps": [
+            "com.google.ios.youtube", "tv.danmaku.bilianime", "com.bilibili.bilicomic", "com.netease.cloudmusic",
+            "com.netease.lofter", "com.valvesoftware.steam", "unity.Team17.Overcooked2", "com.apple.Preview",
+            "com.apple.mobileslideshow", "com.apple.QuickTimePlayerX", "org.krita", "com.adobe.Photoshop",
+            "com.adobe.acc.AdobeCreativeCloud", "org.twinery.twine", "com.apple.Dictionary", "com.apple.iBooksX",
+            "com.atebits.Tweetie2", "com.apple.podcasts", "com.apple.Chess"
+        ]
+    },
+    "web_browsing": {
+        "name": "Web & Browsing",
+        "apps": [
+            "com.google.Chrome", "com.google.chrome.ios", "com.google.Chrome.app.pclfgflcpfaoljnfkkdaehijdkagjkgj",
+            "com.apple.mobilesafari", "com.apple.Safari"
+        ]
+    },
+    "navigation_travel": {
+        "name": "Navigation & Travel",
+        "apps": [
+            "com.google.Maps", "com.ubercab.UberEats", "com.ubercab.UberClient", "com.zimride.instant",
+            "com.ridewithvia.UCA.UniversityOfChicagoRider", "com.southwest.iphoneprod", "com.united.UnitedCustomerFacingIPhone"
+        ]
+    },
+    "shopping_finance": {
+        "name": "Shopping & Finance",
+        "apps": [
+            "com.taobao.taobao4iphone", "com.amazon.Amazon", "com.bestbuy.buyphone", "com.discoverfinancial.mobile",
+            "com.chase", "com.ubixinnovations.kiosoft.cleanpaymobile"
+        ]
+    },
+    "health_lifestyle": {
+        "name": "Health & Lifestyle",
+        "apps": [
+            "com.apple.Health", "com.yardi.rentcafe.resident", "com.bose.boseconnect", "com.bose.bosemusic",
+            "com.differentsocial.Weee", "com.tencent.weread"
+        ]
+    },
+    "development_design": {
+        "name": "Development & Design",
+        "apps": [
+            "com.mcneel.rhinoceros.7", "com.autodesk.fusion360", "net.sourceforge.sqlitebrowser", "todesktop.com.ToDesktop-Installer"
+        ]
+    },
+    "miscellaneous": {
+        "name": "Miscellaneous",
+        "apps": [
+             "com.apple.PosterBoard", "com.apple.BarcodeScanner", "com.apple.PassbookUIService"
+        ]
+    }
+}
