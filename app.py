@@ -116,19 +116,28 @@ elif view_option == "Time-Centric View":
 #     st.plotly_chart(fig)
 
 # Create 100% Stacked Area Chart for Overview View
-elif view_option == "Overview View":
-    category_usage = filtered_data.groupby(['start_time', 'category'])['usage'].sum().reset_index()
-    total_usage = category_usage.groupby('start_time')['usage'].transform('sum')
+if view_option == "Overview View":
+    # Treemap: Category Usage Proportion
+    category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+    total_usage = category_usage['usage'].sum()
     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
 
-    fig = px.area(
-        category_usage,
-        x='start_time',
-        y='percentage',
-        color='category',
-        title="100% Stacked Area Chart of App Usage by Category",
-        labels={'percentage': 'Percentage (%)'},
-        groupnorm='fraction',
-        hover_data={'percentage': ':.2f'}  # Tooltip formatting
+    treemap_fig = px.treemap(
+        category_usage, 
+        path=['category'], 
+        values='percentage', 
+        title="App Usage by Category (Treemap)",
+        hover_data={'percentage': ':.2f'}
     )
-    st.plotly_chart(fig)
+    st.plotly_chart(treemap_fig)
+
+    # Heatmap: Usage Over Time by Category
+    heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
+    heatmap_fig = px.imshow(
+        heatmap_data.T,
+        labels=dict(x="Date", y="Category", color="Usage Time (seconds)"),
+        title="App Usage Heatmap Over Time",
+        aspect="auto",
+        color_continuous_scale="Blues"
+    )
+    st.plotly_chart(heatmap_fig)
