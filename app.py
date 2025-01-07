@@ -122,21 +122,33 @@ if view_option == "Overview":
     total_usage = category_usage['usage'].sum()
     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
 
+    # treemap_fig = px.treemap(
+    #     filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
+    #     path=['category', 'app'], 
+    #     values='usage', 
+    #     title="App Usage by Category and App (Treemap)",
+    #     hover_data={'usage': ':.2f'},
+    #     color='category'
+    # )
+    # st.plotly_chart(treemap_fig)
+
     treemap_fig = px.treemap(
         filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
         path=['category', 'app'], 
         values='usage', 
         title="App Usage by Category and App (Treemap)",
         hover_data={'usage': ':.2f'},
-        color='category'
+        color='usage',
+        color_continuous_scale='Blues',
+        range_color=[filtered_data['usage'].min(), filtered_data['usage'].max()],
+        opacity=0.7
     )
-    st.plotly_chart(treemap_fig)
 
     # Heatmap: Usage Over Time by Category
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
     heatmap_fig = px.imshow(
         heatmap_data.T,
-        labels=dict(x="Date", y="Category", color="Usage Time (s)"),
+        labels=dict(x="Date", y="Category", color="Usage (s)"),
         title="App Usage Heatmap Over Time",
         aspect="auto",
         color_continuous_scale="Blues"
