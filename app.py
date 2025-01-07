@@ -123,11 +123,12 @@ if view_option == "Overview View":
     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
 
     treemap_fig = px.treemap(
-        category_usage, 
-        path=['category'], 
-        values='percentage', 
-        title="App Usage by Category (Treemap)",
-        hover_data={'percentage': ':.2f'}
+        filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
+        path=['category', 'app'], 
+        values='usage', 
+        title="App Usage by Category and App (Treemap)",
+        hover_data={'usage': ':.2f'},
+        color='category'
     )
     st.plotly_chart(treemap_fig)
 
