@@ -5,8 +5,8 @@ import plotly.express as px
 from datetime import datetime
 
 # Load data
-csv_file_path = 'output0106.csv'  
-json_file_path = 'category.json' 
+csv_file_path = 'data/output0106.csv'  
+json_file_path = 'data/category.json' 
 data = pd.read_csv(csv_file_path)
 
 # Load category mapping
@@ -28,7 +28,7 @@ def get_category(app_name):
 data['category'] = data['app'].apply(get_category)
 
 # UI Layout
-st.title("App Usage Data Visualization")
+st.title("Human Surveillance")
 st.sidebar.header("Filters")
 
 view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
