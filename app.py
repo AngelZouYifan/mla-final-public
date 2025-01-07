@@ -67,12 +67,12 @@ if view_option == "App-Centered View":
     if selection_mode == "Single Select":
         selected_app = st.selectbox("Select App", app_names)
         app_data = filtered_data[filtered_data['app'] == selected_app]
-        fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': 'Usage Time (minutes)'})
+        fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': 'Usage Time (s)'})
     else:
         selected_apps = st.multiselect("Select Apps", app_names, default=app_names[:1])
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
-        fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': 'Usage Time (minutes)'})
+        fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': 'Usage Time (s)'})
     
     st.plotly_chart(fig)
 
