@@ -146,7 +146,7 @@ if view_option == "Overview":
         title="App Usage by Category and App (Treemap)",
         hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
         color='normalized_usage',
-        color_continuous_scale='Blues',
+        # color_continuous_scale='Blues',
         range_color=[0, 1]
     )
     st.plotly_chart(treemap_fig)
