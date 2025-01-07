@@ -83,14 +83,15 @@ if view_option == "App-Centered View":
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
         
-        if max(app_data['usage']) > 300 * 60:
-            app_data['usage'] = app_data['usage'] / 3600
-            unit_label = 'Usage Time (hours)'
-        elif max(app_data['usage']) > 600:
-            app_data['usage'] = app_data['usage'] / 60
-            unit_label = 'Usage Time (minutes)'
-        else:
-            unit_label = 'Usage Time (seconds)'
+        if grouped_data: 
+            if max(grouped_data['usage']) > 300 * 60:
+                grouped_data['usage'] = grouped_data['usage'] / 3600
+                unit_label = 'Usage Time (hours)'
+            elif max(grouped_data['usage']) > 600:
+                grouped_data['usage'] = grouped_data['usage'] / 60
+                unit_label = 'Usage Time (minutes)'
+            else:
+                unit_label = 'Usage Time (seconds)'
         
         fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': unit_label})
     
@@ -106,10 +107,28 @@ elif view_option == "Time-Centric View":
         fig = px.bar(grouped_data, x='start_time', y='usage', title="App Usage Over 7 Days", labels={'usage': 'Usage Time (minutes)', 'start_time': 'Date'})
     st.plotly_chart(fig)
 
+# elif view_option == "Overview View":
+#     category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+#     total_usage = category_usage['usage'].sum()
+#     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
+
+#     fig = px.pie(category_usage, names='category', values='percentage', title="App Usage by Category")
+#     st.plotly_chart(fig)
+
+# Create 100% Stacked Area Chart for Overview View
 elif view_option == "Overview View":
-    category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
-    total_usage = category_usage['usage'].sum()
+    category_usage = filtered_data.groupby(['start_time', 'category'])['usage'].sum().reset_index()
+    total_usage = category_usage.groupby('start_time')['usage'].transform('sum')
     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
 
-    fig = px.pie(category_usage, names='category', values='percentage', title="App Usage by Category")
+    fig = px.area(
+        category_usage,
+        x='start_time',
+        y='percentage',
+        color='category',
+        title="100% Stacked Area Chart of App Usage by Category",
+        labels={'percentage': 'Percentage (%)'},
+        groupnorm='fraction',
+        hover_data={'percentage': ':.2f'}  # Tooltip formatting
+    )
     st.plotly_chart(fig)
