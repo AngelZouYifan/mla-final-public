@@ -116,7 +116,7 @@ elif view_option == "Time-Centric View":
 #     st.plotly_chart(fig)
 
 # Create 100% Stacked Area Chart for Overview View
-if view_option == "Overview View":
+if view_option == "Overview":
     # Treemap: Category Usage Proportion
     category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
     total_usage = category_usage['usage'].sum()
@@ -136,7 +136,7 @@ if view_option == "Overview View":
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
     heatmap_fig = px.imshow(
         heatmap_data.T,
-        labels=dict(x="Date", y="Category", color="Usage Time (seconds)"),
+        labels=dict(x="Date", y="Category", color="Usage Time (s)"),
         title="App Usage Heatmap Over Time",
         aspect="auto",
         color_continuous_scale="Blues"
