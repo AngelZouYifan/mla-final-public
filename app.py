@@ -68,14 +68,15 @@ if view_option == "App-Centered View":
         selected_app = st.selectbox("Select App", app_names)
         app_data = filtered_data[filtered_data['app'] == selected_app]
         
+        unit_label = 'Usage Time (seconds)'
         if max(app_data['usage']) > 300 * 60:
             app_data['usage'] = app_data['usage'] / 3600
             unit_label = 'Usage Time (hours)'
         if max(app_data['usage']) > 600:
             app_data['usage'] = app_data['usage'] / 60
             unit_label = 'Usage Time (minutes)'
-        else:
-            unit_label = 'Usage Time (seconds)'
+        # else:
+        #     unit_label = 'Usage Time (seconds)'
         
         fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': unit_label})
     else:
@@ -83,15 +84,13 @@ if view_option == "App-Centered View":
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
         
-        if grouped_data: 
-            if max(grouped_data['usage']) > 300 * 60:
-                grouped_data['usage'] = grouped_data['usage'] / 3600
-                unit_label = 'Usage Time (hours)'
-            elif max(grouped_data['usage']) > 600:
-                grouped_data['usage'] = grouped_data['usage'] / 60
-                unit_label = 'Usage Time (minutes)'
-            else:
-                unit_label = 'Usage Time (seconds)'
+        unit_label = 'Usage Time (seconds)'
+        if max(grouped_data['usage']) > 300 * 60:
+            grouped_data['usage'] = grouped_data['usage'] / 3600
+            unit_label = 'Usage Time (hours)'
+        elif max(grouped_data['usage']) > 600:
+            grouped_data['usage'] = grouped_data['usage'] / 60
+            unit_label = 'Usage Time (minutes)'
         
         fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': unit_label})
     
