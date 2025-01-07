@@ -143,9 +143,8 @@ if view_option == "Overview":
         category_usage,
         path=['category', 'app'], 
         values='usage', 
-        title="App Usage by Category and App (Treemap)",
-        hover_data={'usage:' ':.2f'},
-        # hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
+        title="App Usage (Treemap)",
+        hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
         color='normalized_usage',
         color_continuous_scale='Blues',
         range_color=[0, 1]
@@ -158,7 +157,7 @@ if view_option == "Overview":
     heatmap_fig = px.imshow(
         heatmap_data.T,
         labels=dict(x="Date", y="Category", color="Usage (s)"),
-        title="App Usage Heatmap Over Time",
+        title="App Usage Over Time (Heatmap)",
         aspect="auto",
         color_continuous_scale="Blues"
     )
