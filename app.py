@@ -146,13 +146,12 @@ if view_option == "Overview":
         title="App Usage by Category and App (Treemap)",
         hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
         color='normalized_usage',
-        # color_continuous_scale='Blues',
+        color_continuous_scale='Blues',
         range_color=[0, 1]
     )
     st.plotly_chart(treemap_fig)
 
         
-
     # Heatmap: Usage Over Time by Category
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
     heatmap_fig = px.imshow(
