@@ -62,16 +62,16 @@ filtered_data = filtered_data[filtered_data['category'].isin(selected_categories
 if view_option == "App-Centered View":
     app_names = filtered_data['app'].unique()
     selection_mode = st.radio("Selection Mode", ["Single Select", "Multi Select"])
+    unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
     
     if selection_mode == "Single Select":
         selected_app = st.selectbox("Select App", app_names)
         app_data = filtered_data[filtered_data['app'] == selected_app]
-        unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
         
-        if unit_option == "Minutes":
+        if max(app_data['usage']) > 600:
             app_data['usage'] = app_data['usage'] / 60
             unit_label = 'Usage Time (minutes)'
-        elif unit_option == "Hours":
+        elif max(app_data['usage']) > 300 * 60:
             app_data['usage'] = app_data['usage'] / 3600
             unit_label = 'Usage Time (hours)'
         else:
@@ -82,7 +82,7 @@ if view_option == "App-Centered View":
         selected_apps = st.multiselect("Select Apps", app_names, default=app_names[:1])
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
-        unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
+        # unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
         
         if unit_option == "Minutes":
             grouped_data['usage'] = grouped_data['usage'] / 60
