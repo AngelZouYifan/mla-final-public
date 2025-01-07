@@ -28,7 +28,7 @@ def get_category(app_name):
 data['category'] = data['app'].apply(get_category)
 
 # UI Layout
-st.title("Human Surveillance")
+st.title("Self-Surveillance")
 st.sidebar.header("Filters")
 
 view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
@@ -59,7 +59,7 @@ filtered_data = filtered_data[filtered_data['category'].isin(selected_categories
 # Views
 # view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
 
-if view_option == \"App-Centered View\":
+if view_option == "App-Centered View":
     app_names = filtered_data['app'].unique()
     selection_mode = st.radio("Selection Mode", ["Single Select", "Multi Select"])
     
