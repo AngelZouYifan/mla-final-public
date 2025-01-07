@@ -28,10 +28,10 @@ def get_category(app_name):
 data['category'] = data['app'].apply(get_category)
 
 # UI Layout
-st.title("Human Surveillance")
+st.title("Self-Surveillance")
 st.sidebar.header("Filters")
 
-view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
+view_option = st.sidebar.radio("Select View", ["Overview","App-Centered View", "Time-Centric View"])
 
 # st.sidebar.write("Select filters to customize the view.")
 # st.sidebar.markdown("---")
@@ -61,9 +61,40 @@ filtered_data = filtered_data[filtered_data['category'].isin(selected_categories
 
 if view_option == "App-Centered View":
     app_names = filtered_data['app'].unique()
-    selected_app = st.selectbox("Select App", app_names)
-    app_data = filtered_data[filtered_data['app'] == selected_app]
-    fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': 'Usage Time (minutes)'})
+    selection_mode = st.radio("Selection Mode", ["Single Select", "Multi Select"])
+    # unit_option = st.radio("Select Time Unit", ["Seconds", "Minutes", "Hours"], index=1)
+    
+    if selection_mode == "Single Select":
+        selected_app = st.selectbox("Select App", app_names)
+        app_data = filtered_data[filtered_data['app'] == selected_app]
+        
+        if max(app_data['usage']) > 300 * 60:
+            app_data['usage'] = app_data['usage'] / 3600
+            unit_label = 'Usage Time (hours)'
+        if max(app_data['usage']) > 600:
+            app_data['usage'] = app_data['usage'] / 60
+            unit_label = 'Usage Time (minutes)'
+        else:
+            unit_label = 'Usage Time (seconds)'
+        
+        fig = px.line(app_data, x='start_time', y='usage', title=f"Usage Over Time for {selected_app}", labels={'usage': unit_label})
+    else:
+        selected_apps = st.multiselect("Select Apps", app_names, default=app_names[:1])
+        app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
+        grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
+        
+        if grouped_data: 
+            if max(grouped_data['usage']) > 300 * 60:
+                grouped_data['usage'] = grouped_data['usage'] / 3600
+                unit_label = 'Usage Time (hours)'
+            elif max(grouped_data['usage']) > 600:
+                grouped_data['usage'] = grouped_data['usage'] / 60
+                unit_label = 'Usage Time (minutes)'
+            else:
+                unit_label = 'Usage Time (seconds)'
+        
+        fig = px.line(grouped_data, x='start_time', y='usage', title=f"Aggregate Usage Over Time for Selected Apps", labels={'usage': unit_label})
+    
     st.plotly_chart(fig)
 
 elif view_option == "Time-Centric View":
@@ -76,5 +107,58 @@ elif view_option == "Time-Centric View":
         fig = px.bar(grouped_data, x='start_time', y='usage', title="App Usage Over 7 Days", labels={'usage': 'Usage Time (minutes)', 'start_time': 'Date'})
     st.plotly_chart(fig)
 
-# st.sidebar.markdown("---")
-# st.sidebar.write("Select filters to customize the view.")
+# elif view_option == "Overview View":
+#     category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+#     total_usage = category_usage['usage'].sum()
+#     category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
+
+#     fig = px.pie(category_usage, names='category', values='percentage', title="App Usage by Category")
+#     st.plotly_chart(fig)
+
+# Create 100% Stacked Area Chart for Overview View
+if view_option == "Overview":
+    # Treemap: Category Usage Proportion
+    # category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+    # total_usage = category_usage['usage'].sum()
+    # category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
+
+    # treemap_fig = px.treemap(
+    #     filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index(),
+    #     path=['category', 'app'], 
+    #     values='usage', 
+    #     title="App Usage by Category and App (Treemap)",
+    #     hover_data={'usage': ':.2f'},
+    #     color='category'
+    # )
+    # st.plotly_chart(treemap_fig)
+
+    # Treemap with distinct color variation for categories and subtle variation for apps
+    category_usage = filtered_data.groupby(['category', 'app'])['usage'].sum().reset_index()
+
+    # Normalize usage for color scaling within each category
+    category_usage['category_total'] = category_usage.groupby('category')['usage'].transform('sum')
+    category_usage['normalized_usage'] = category_usage['usage'] / category_usage['category_total']
+
+    treemap_fig = px.treemap(
+        category_usage,
+        path=['category', 'app'], 
+        values='usage', 
+        title="App Usage by Category and App (Treemap)",
+        hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
+        color='normalized_usage',
+        color_continuous_scale='Blues',
+        range_color=[0, 1]
+    )
+    st.plotly_chart(treemap_fig)
+
+        
+    # Heatmap: Usage Over Time by Category
+    heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
+    heatmap_fig = px.imshow(
+        heatmap_data.T,
+        labels=dict(x="Date", y="Category", color="Usage (s)"),
+        title="App Usage Heatmap Over Time",
+        aspect="auto",
+        color_continuous_scale="Blues"
+    )
+    st.plotly_chart(heatmap_fig)
