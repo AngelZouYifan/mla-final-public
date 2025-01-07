@@ -136,7 +136,7 @@ if view_option == "Overview":
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
     heatmap_fig = px.imshow(
         heatmap_data.T,
-        labels=dict(x="Date", y="Category", color="Usage Time (s)"),
+        labels=dict(x="Date", y="Category", color="Usage Time (seconds)"),
         title="App Usage Heatmap Over Time",
         aspect="auto",
         color_continuous_scale="Blues"
