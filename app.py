@@ -141,8 +141,12 @@ if view_option == "Overview":
         color='usage',
         color_continuous_scale='Blues',
         range_color=[filtered_data['usage'].min(), filtered_data['usage'].max()],
-        opacity=0.7
-    )
+        color_discrete_sequence=px.colors.qualitative.Pastel
+        )
+    st.plotly_chart(treemap_fig)
+
+
+    
 
     # Heatmap: Usage Over Time by Category
     heatmap_data = filtered_data.groupby([filtered_data['start_time'].dt.date, 'category'])['usage'].sum().unstack(fill_value=0)
