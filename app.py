@@ -144,7 +144,7 @@ if view_option == "Overview":
         path=['category', 'app'], 
         values='usage', 
         title="App Usage by Category and App (Treemap)",
-        hover_data={'usage:' ':.2f'}
+        hover_data={'usage:' ':.2f'},
         # hover_data={'usage': ':.2f', 'normalized_usage': ':.2f'},
         color='normalized_usage',
         color_continuous_scale='Blues',
