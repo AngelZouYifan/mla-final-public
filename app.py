@@ -31,6 +31,11 @@ data['category'] = data['app'].apply(get_category)
 st.title("App Usage Data Visualization")
 st.sidebar.header("Filters")
 
+view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
+
+# st.sidebar.write("Select filters to customize the view.")
+# st.sidebar.markdown("---")
+
 # Filter: Time Range
 if not data.empty:
     min_date = data['date'].min()
@@ -52,7 +57,7 @@ selected_categories = st.sidebar.multiselect("Select Categories", category_names
 filtered_data = filtered_data[filtered_data['category'].isin(selected_categories)]
 
 # Views
-view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
+# view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
 
 if view_option == "App-Centered View":
     app_names = filtered_data['app'].unique()
@@ -71,5 +76,5 @@ elif view_option == "Time-Centric View":
         fig = px.bar(grouped_data, x='start_time', y='usage', title="App Usage Over 7 Days", labels={'usage': 'Usage Time (minutes)', 'start_time': 'Date'})
     st.plotly_chart(fig)
 
-st.sidebar.markdown("---")
-st.sidebar.write("Select filters to customize the view.")
+# st.sidebar.markdown("---")
+# st.sidebar.write("Select filters to customize the view.")
