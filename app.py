@@ -31,7 +31,7 @@ data['category'] = data['app'].apply(get_category)
 st.title("Self-Surveillance")
 st.sidebar.header("Filters")
 
-view_option = st.sidebar.radio("Select View", ["App-Centered View", "Time-Centric View"])
+view_option = st.sidebar.radio("Select View", ["Overview View","App-Centered View", "Time-Centric View"])
 
 # st.sidebar.write("Select filters to customize the view.")
 # st.sidebar.markdown("---")
@@ -68,12 +68,12 @@ if view_option == "App-Centered View":
         selected_app = st.selectbox("Select App", app_names)
         app_data = filtered_data[filtered_data['app'] == selected_app]
         
+        if max(app_data['usage']) > 300 * 60:
+            app_data['usage'] = app_data['usage'] / 3600
+            unit_label = 'Usage Time (hours)'
         if max(app_data['usage']) > 600:
             app_data['usage'] = app_data['usage'] / 60
             unit_label = 'Usage Time (minutes)'
-        elif max(app_data['usage']) > 300 * 60:
-            app_data['usage'] = app_data['usage'] / 3600
-            unit_label = 'Usage Time (hours)'
         else:
             unit_label = 'Usage Time (seconds)'
         
@@ -83,12 +83,12 @@ if view_option == "App-Centered View":
         app_data = filtered_data[filtered_data['app'].isin(selected_apps)]
         grouped_data = app_data.groupby('start_time')['usage'].sum().reset_index()
         
-        if max(app_data['usage']) > 600:
-            app_data['usage'] = app_data['usage'] / 60
-            unit_label = 'Usage Time (minutes)'
-        elif max(app_data['usage']) > 300 * 60:
+        if max(app_data['usage']) > 300 * 60:
             app_data['usage'] = app_data['usage'] / 3600
             unit_label = 'Usage Time (hours)'
+        elif max(app_data['usage']) > 600:
+            app_data['usage'] = app_data['usage'] / 60
+            unit_label = 'Usage Time (minutes)'
         else:
             unit_label = 'Usage Time (seconds)'
         
@@ -106,5 +106,10 @@ elif view_option == "Time-Centric View":
         fig = px.bar(grouped_data, x='start_time', y='usage', title="App Usage Over 7 Days", labels={'usage': 'Usage Time (minutes)', 'start_time': 'Date'})
     st.plotly_chart(fig)
 
-# st.sidebar.markdown("---")
-# st.sidebar.write("Select filters to customize the view.")
+elif view_option == "Overview View":
+    category_usage = filtered_data.groupby('category')['usage'].sum().reset_index()
+    total_usage = category_usage['usage'].sum()
+    category_usage['percentage'] = (category_usage['usage'] / total_usage) * 100
+
+    fig = px.pie(category_usage, names='category', values='percentage', title="App Usage by Category")
+    st.plotly_chart(fig)
